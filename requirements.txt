@@ -1,0 +1,9 @@
+flask-oidc
+Flask
+okta
+requests
+flask-cors
+pyOpenSSL
+Flask-Login
+okta-jwt-verifier
+Flask-Ext

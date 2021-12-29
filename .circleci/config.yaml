@@ -2,3 +2,6 @@ version: 2
 jobs:
   build:
     working_directory: ~
+    steps:
+      - checkout  # checkout source code to working directory
+      - run: pip install -r requirements.txt

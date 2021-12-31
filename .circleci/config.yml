@@ -19,6 +19,7 @@ jobs:
 
     steps:
       - checkout
+      - run: pip install -r requirements.txt
       - run: echo "this is the build job"
         
   test:

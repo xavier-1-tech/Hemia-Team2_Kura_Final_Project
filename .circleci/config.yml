@@ -4,19 +4,19 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: circleci/python:3.7.4
+      - image: andrewdass/hemia-1.0 
         auth:
-          username: andrewdass
-          password: 4719e342-a846-4ca5-9357-2befc754b105  # context / project UI env-var reference
+          username: mydockerhub-user
+          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
     steps:
       - checkout
       - run: echo "this is the build job"
   test:
     docker:
-      - image: circleci/python:3.7.4
+      - image: andrewdass/hemia-1.0
         auth:
-          username: andrewdass
-          password: 4719e342-a846-4ca5-9357-2befc754b105  # context / project UI env-var reference
+          username: mydockerhub-user
+          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
         
     steps:
       - checkout

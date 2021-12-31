@@ -9,4 +9,5 @@ setuptools==44.0.0
 Werkzeug==2.0.2
 pytest==5.2.2
 pytest-html==2.0.0
+wrapt==1.13.3
 pylint==2.4.3

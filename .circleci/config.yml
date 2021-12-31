@@ -13,7 +13,7 @@ jobs:
       - run: echo "this is the build job"
   test:
     docker:
-      - image: cimg/<language>:<version TAG>
+      - image: circleci/python:3.7.4
         auth:
           username: mydockerhub-user
           password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference

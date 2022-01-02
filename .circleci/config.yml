@@ -30,20 +30,9 @@ jobs:
     steps:
       - checkout
       - run: pip install --upgrade -r requirements.txt
-      - run: mkdir bucket && echo "*" > bucket/test.txt
-      - aws-s3/sync:
-          arguments: |
-            --acl public-read \
-            --cache-control "max-age=86400"
-          aws-access-key-id: AccessKeyID
-          aws-region: Region
-          aws-secret-access-key: SecretAccessKey
-          from: bucket
-          to: 's3://hemia'
-      - aws-s3/copy:
-          arguments: '--dryrun'
-          from: bucket/test.txt
-          to: 's3://hemia'
+      - run: apt-get update
+      - run: apt install python3-pip
+      - run: pip3 install awsebcli --upgrade
 
          
       

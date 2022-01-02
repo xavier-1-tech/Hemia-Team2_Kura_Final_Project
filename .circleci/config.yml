@@ -4,7 +4,7 @@ orbs:
 jobs:
   build:
     docker:
-      - image: 'andrewdass/hemia-1.0'
+      - image: 'circleci/python:3.10.1'
         auth:
           username: andrewdass
           password: 'DockerToken'  # context / project UI env-var reference

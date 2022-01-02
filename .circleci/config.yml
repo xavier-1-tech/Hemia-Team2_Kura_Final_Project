@@ -32,7 +32,7 @@ jobs:
       - run: pip install --upgrade -r requirements.txt
       - run: apt-get update
       - run: pip3 install awsebcli --upgrade
-      - run: aws s3 sync ./~ s3://hemia
+      - run: aws s3 sync ./.circleci/config.yml s3://hemia
       - run: echo "this is the build job"
         
   test:

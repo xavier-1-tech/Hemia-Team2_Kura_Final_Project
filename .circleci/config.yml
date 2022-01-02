@@ -1,4 +1,17 @@
 version: 2.1
+
+workflows:
+  build_and_test:
+    jobs:
+      - build:
+          context:
+            - org-global
+            - aws_keys
+      - test:
+          context:
+            - org-global
+            - aws_keys
+
 orbs:
   eb: circleci/aws-elastic-beanstalk@1.0.0
   node: circleci/node@4.1.0
@@ -37,17 +50,5 @@ jobs:
     
  
 # Orchestrate our job run sequence
-workflows:
-  build_and_test:
-    jobs:
-      - build:
-          context:
-            - AccessKeyID
-            - DockerToken
-            - SecretAccessKey
-      - test:
-          context:
-            - AccessKeyID
-            - DockerToken
-            - SecretAccessKey
+
 

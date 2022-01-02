@@ -11,7 +11,7 @@ jobs:
       - image: andrewdass/hemia-1.0
         auth:
           username: andrewdass
-          password: 4719e342-a846-4ca5-9357-2befc754b105  # context / project UI env-var reference
+          password: DockerToken  # context / project UI env-var reference
         environment:
           PIPENV_VENV_IN_PROJECT: true
           DATABASE_URL: database.cw720ufh2k84.us-east-1.rds.amazonaws.com
@@ -27,7 +27,7 @@ jobs:
       - image: andrewdass/hemia-1.0
         auth:
           username: andrewdass
-          password: 4719e342-a846-4ca5-9357-2befc754b105  # context / project UI env-var reference
+          password: DockerToken  # context / project UI env-var reference
         environment:
           POSTGRES_USER: admin
           POSTGRES_DB: database
@@ -40,5 +40,14 @@ jobs:
 workflows:
   build_and_test:
     jobs:
-      - build
-      - test
+      - build:
+          context:
+            - AccessKeyID
+            - DockerToken
+            - SecretAccessKey
+      - test:
+          context:
+            - AccessKeyID
+            - DockerToken
+            - SecretAccessKey
+

@@ -30,7 +30,8 @@ jobs:
     steps:
       - checkout
       - run: pip install --upgrade -r requirements.txt
-      - run: pip install awscli
+      - run: sudo apt-get update
+      - run: sudo apt install awsebcli --upgrade
       - run: aws-s3/sync .// http://hemia.s3-website-us-east-1.amazonaws.com
          
       

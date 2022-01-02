@@ -32,8 +32,15 @@ jobs:
       - run: pip install --upgrade -r requirements.txt
       - run: apt-get update
       - run: pip3 install awsebcli --upgrade
-      - run: aws s3 sync . s3://hemia
-      - run: echo "this is the build job"
+      - aws-s3/sync:
+          arguments: |
+            --acl public-read \
+            --cache-control "max-age=86400"
+          aws-access-key-id: AWS_ACCESS_KEY_ID
+          aws-region: AWS_REGION
+          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+          from: bucket
+          to: "s3://hemia"
         
   test:
     docker:

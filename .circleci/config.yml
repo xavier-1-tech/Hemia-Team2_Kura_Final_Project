@@ -30,7 +30,7 @@ jobs:
     steps:
       - checkout
       - run: pip install --upgrade -r requirements.txt
-      - run: sudo pip install awscli
+      - run: pip install awscli
       - aws-s3/sync:
           arguments: |
             --acl public-read \

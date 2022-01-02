@@ -16,7 +16,6 @@ orbs:
   eb: circleci/aws-elastic-beanstalk@1.0.0
   node: circleci/node@4.1.0
   aws-s3: circleci/aws-s3@3.0 
-  aws-cli: circleci/aws-cli@2.0.6
  
 # Define the jobs we want to run for this project
 
@@ -31,10 +30,21 @@ jobs:
     steps:
       - checkout
       - run: pip install --upgrade -r requirements.txt
-      - run: apt-get update
-      - run: apt install pip
-      - run: apt install awsebcli --upgrade 
-      - run: aws-s3/sync .// http://hemia.s3-website-us-east-1.amazonaws.com
+      - run: mkdir bucket && echo "*" > bucket/test.txt
+      - aws-s3/sync:
+          arguments: |
+            --acl public-read \
+            --cache-control "max-age=86400"
+          aws-access-key-id: AccessKeyID
+          aws-region: Region
+          aws-secret-access-key: SecretAccessKey
+          from: bucket
+          to: 's3://hemia'
+      - aws-s3/copy:
+          arguments: '--dryrun'
+          from: bucket/test.txt
+          to: 's3://hemia'
+
          
       
       - run: echo "this is the build job"

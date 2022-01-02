@@ -39,7 +39,7 @@ jobs:
           aws-region: Region
           aws-secret-access-key: SecretAccessKey
           from: bucket
-          to: 's3//hemia/'  
+          to: 'http://hemia.s3-website-us-east-1.amazonaws.com'  
       
       - run: echo "this is the build job"
         

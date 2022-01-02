@@ -24,7 +24,7 @@ jobs:
       - image: andrewdass/hemia-1.0
         auth:
           username: andrewdass
-          password: DockerToken  # context / project UI env-var reference
+          password: $DockerToken  # context / project UI env-var reference
 
     steps:
       - checkout

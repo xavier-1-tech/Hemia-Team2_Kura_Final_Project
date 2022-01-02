@@ -15,6 +15,7 @@ workflows:
 orbs:
   eb: circleci/aws-elastic-beanstalk@1.0.0
   node: circleci/node@4.1.0
+  aws-s3: circleci/aws-s3@3.0
  
 # Define the jobs we want to run for this project
 
@@ -28,6 +29,15 @@ jobs:
 
     steps:
       - checkout
+      - aws-s3/sync:
+          arguments: |
+            --acl public-read \
+            --cache-control "max-age=86400"
+          aws-access-key-id: AccessKeyID
+          aws-region: Region
+          aws-secret-access-key: SecretAccessKey
+          from: bucket
+          to: 's3//hemia/'  
       - run: pip install --upgrade -r requirements.txt
       - run: echo "this is the build job"
         

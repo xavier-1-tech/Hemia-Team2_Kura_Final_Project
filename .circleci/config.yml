@@ -31,7 +31,6 @@ jobs:
       - checkout
       - run: pip install --upgrade -r requirements.txt
       - run: apt-get update
-      - run: apt install python3-pip
       - run: pip3 install awsebcli --upgrade
 
          

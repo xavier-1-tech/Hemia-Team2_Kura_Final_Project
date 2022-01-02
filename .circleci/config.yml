@@ -1,17 +1,13 @@
 version: 2.1
 orbs:
-  eb: circleci/aws-elastic-beanstalk@1.0.0
-  node: circleci/node@4.1.0
- 
-# Define the jobs we want to run for this project
-
+  aws-s3: circleci/aws-s3@3.0
 jobs:
   build:
     docker:
       - image: andrewdass/hemia-1.0
         auth:
           username: andrewdass
-          password: 4719e342-a846-4ca5-9357-2befc754b105  # context / project UI env-var reference
+          password: 'DockerToken'  # context / project UI env-var reference
         environment:
           PIPENV_VENV_IN_PROJECT: true
           DATABASE_URL: database.cw720ufh2k84.us-east-1.rds.amazonaws.com
@@ -27,7 +23,7 @@ jobs:
       - image: andrewdass/hemia-1.0
         auth:
           username: andrewdass
-          password: 4719e342-a846-4ca5-9357-2befc754b105  # context / project UI env-var reference
+          password: 'DockerToken' # context / project UI env-var reference
         environment:
           POSTGRES_USER: admin
           POSTGRES_DB: database

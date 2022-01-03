@@ -6,15 +6,15 @@ workflows:
       - build:
           context:
             - org-global
-            - aws_keys
-      - deploy:
-          context:
-            - org-global
-            - aws_keys
+            - keys
       - test:
           context:
             - org-global
-            - aws_keys
+            - keys
+      - deploy:
+          context:
+            - org-global
+            - keys
 
 orbs:
   eb: circleci/aws-elastic-beanstalk@1.0.0
@@ -31,7 +31,7 @@ jobs:
       - image: andrewdass/hemia-1.0
         auth:
           username: andrewdass
-          password: $DockerToken  # context / project UI env-var reference
+          password: $DOCKERTOKEN  # context / project UI env-var reference
 
     steps:
       - checkout
@@ -47,18 +47,6 @@ jobs:
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
           from: ./
           to: "s3://hemia"
-
-      
-  deploy:
-    docker:
-      - image: andrewdass/hemia-1.0
-        auth:
-          username: andrewdass
-          password: $DockerToken  # context / project UI env-var reference
-    steps:
-      - checkout
-      - run: echo "this is the test job"
-  
           
         
   test:
@@ -66,12 +54,20 @@ jobs:
       - image: andrewdass/hemia-1.0
         auth:
           username: andrewdass
-          password: $DockerToken  # context / project UI env-var reference
+          password: $DOCKERTOKEN  # context / project UI env-var reference
     steps:
       - checkout
       - run: echo "this is the test job"
     
  
-# Orchestrate our job run sequence
+  deploy:
+    docker:
+      - image: andrewdass/hemia-1.0
+        auth:
+          username: andrewdass
+          password: $DOCKETOKEN  # context / project UI env-var reference
+    steps:
+      - checkout
+      - run: echo "this is the test job"
 
 

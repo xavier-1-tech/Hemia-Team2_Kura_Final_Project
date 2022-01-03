@@ -40,7 +40,8 @@ jobs:
           aws-region: AWS_REGION
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
           from: bucket
-          to: "http://hemia.s3-website-us-east-1.amazonaws.com"
+          to: "https://hemia.s3.amazonaws.com/"
+          
         
   test:
     docker:

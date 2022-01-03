@@ -65,7 +65,7 @@ jobs:
       - image: andrewdass/hemia-1.0
         auth:
           username: andrewdass
-          password: $DOCKETOKEN  # context / project UI env-var reference
+          password: $DOCKERTOKEN  # context / project UI env-var reference
     steps:
       - checkout
       - run: echo "this is the test job"

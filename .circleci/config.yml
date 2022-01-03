@@ -39,8 +39,8 @@ jobs:
           aws-access-key-id: AWS_ACCESS_KEY_ID
           aws-region: AWS_REGION
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-          from: bucket
-          to: "https://hemia.s3.amazonaws.com/s3://hemia"
+          from: ./
+          to: "s3://hemia"
           
         
   test:

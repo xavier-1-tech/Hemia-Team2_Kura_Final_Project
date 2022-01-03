@@ -1,9 +1,13 @@
 version: 2.1
 
 workflows:
-  build_and_test:
+  build_and_deploy_and_test:
     jobs:
       - build:
+          context:
+            - org-global
+            - aws_keys
+      - deploy:
           context:
             - org-global
             - aws_keys
@@ -16,6 +20,8 @@ orbs:
   eb: circleci/aws-elastic-beanstalk@1.0.0
   node: circleci/node@4.1.0
   aws-s3: circleci/aws-s3@3.0 
+  aws-ecr: circleci/aws-ecr@7.3.0
+  aws-ecs: circleci/aws-ecs@2.2.1
  
 # Define the jobs we want to run for this project
 
@@ -41,6 +47,18 @@ jobs:
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
           from: ./
           to: "s3://hemia"
+
+      
+  deploy:
+    docker:
+      - image: andrewdass/hemia-1.0
+        auth:
+          username: andrewdass
+          password: $DockerToken  # context / project UI env-var reference
+    steps:
+      - checkout
+      - run: echo "this is the test job"
+  
           
         
   test:

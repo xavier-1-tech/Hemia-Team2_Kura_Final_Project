@@ -32,10 +32,11 @@ jobs:
         auth:
           username: andrewdass
           password: $DOCKERTOKEN  # context / project UI env-var reference
-      - image: circleci/mysql:8.0.4
+      - image: circleci/mysql:8.0.4 --security-opt seccomp=unconfined  
         auth:
           username: andrewdass
           password: $DOCKERTOKEN
+        
         # environment: 
         #   MYSQL_DATABASE: MYSQL_NAME 
         #   MYSQL_HOST: MYSQL_URL 

@@ -19,8 +19,7 @@ workflows:
 orbs:
   eb: circleci/aws-elastic-beanstalk@1.0.0
   aws-s3: circleci/aws-s3@3.0 
-  # aws-ecr: circleci/aws-ecr@7.3.0
-  # aws-ecs: circleci/aws-ecs@2.2.1
+  aws-code-deploy: circleci/aws-code-deploy@2.0.0
  
 # Define the jobs we want to run for this project
 
@@ -67,6 +66,7 @@ jobs:
     steps:
       - checkout
       - run: echo "Testing the application with pytest"
+      - run: python -m pytest
     
  
   deploy:

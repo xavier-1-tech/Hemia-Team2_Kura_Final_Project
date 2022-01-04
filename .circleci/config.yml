@@ -19,7 +19,6 @@ workflows:
 orbs:
   eb: circleci/aws-elastic-beanstalk@1.0.0
   aws-s3: circleci/aws-s3@3.0 
-  aws-code-deploy: circleci/aws-code-deploy@2.0.0
  
 # Define the jobs we want to run for this project
 

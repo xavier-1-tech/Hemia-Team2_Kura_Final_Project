@@ -15,15 +15,12 @@ workflows:
           context:
             - org-global
             - keys
-      - aws-ecr/build-and-push-image:
-          repo: hey
-          tag: hey
 
 orbs:
   eb: circleci/aws-elastic-beanstalk@1.0.0
   aws-s3: circleci/aws-s3@3.0 
-  aws-ecr: circleci/aws-ecr@7.3.0
-  aws-ecs: circleci/aws-ecs@2.2.1
+  # aws-ecr: circleci/aws-ecr@7.3.0
+  # aws-ecs: circleci/aws-ecs@2.2.1
  
 # Define the jobs we want to run for this project
 
@@ -50,15 +47,15 @@ jobs:
       - run: pip install --upgrade -r requirements.txt
       - run: apt-get update
       - run: pip3 install awsebcli --upgrade
-      - aws-s3/sync:
-          arguments: |
-            --acl public-read \
-            --cache-control "max-age=86400"
-          aws-access-key-id: AWS_ACCESS_KEY_ID
-          aws-region: AWS_REGION
-          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-          from: ./
-          to: "s3://hemia"
+      # - aws-s3/sync:
+      #     arguments: |
+      #       --acl public-read \
+      #       --cache-control "max-age=86400"
+      #     aws-access-key-id: AWS_ACCESS_KEY_ID
+      #     aws-region: AWS_REGION
+      #     aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+      #     from: ./
+      #     to: "s3://hemia"
       
         
   test:
@@ -80,6 +77,6 @@ jobs:
           password: $DOCKERTOKEN  # context / project UI env-var reference  
     steps:
       - checkout
-      - run: echo "Successful deployment to ECR"
+      - run: echo "Successful deployment"
 
 

@@ -37,10 +37,9 @@ jobs:
           username: andrewdass
           password: $DOCKERTOKEN
         environment: 
-          MYSQL_ROOT_PASSWORD:
-          MYSQL_DATABASE: 
-          MYSQL_USER:
-          MYSQL_PASSWORD: 
+          MYSQL_ROOT_USER: MYSQL_USER
+          MYSQL_ROOT_PASSWORD: MYSQL_PASSWORD  
+          MYSQL_DATABASE: MYSQL     
     steps:
       - checkout
       - run: pip install --upgrade -r requirements.txt

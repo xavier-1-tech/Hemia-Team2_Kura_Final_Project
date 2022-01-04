@@ -15,10 +15,12 @@ workflows:
           context:
             - org-global
             - keys
+      - aws-ecr/build-and-push-image:
+          repo: hey
+          tag: hey
 
 orbs:
   eb: circleci/aws-elastic-beanstalk@1.0.0
-  node: circleci/node@4.1.0
   aws-s3: circleci/aws-s3@3.0 
   aws-ecr: circleci/aws-ecr@7.3.0
   aws-ecs: circleci/aws-ecs@2.2.1
@@ -67,7 +69,7 @@ jobs:
           password: $DOCKERTOKEN  # context / project UI env-var reference
     steps:
       - checkout
-      - run: echo "this is the test job"
+      - run: echo "Testing the application with pytest"
     
  
   deploy:
@@ -75,9 +77,9 @@ jobs:
       - image: andrewdass/hemia-1.0
         auth:
           username: andrewdass
-          password: $DOCKERTOKEN  # context / project UI env-var reference
+          password: $DOCKERTOKEN  # context / project UI env-var reference  
     steps:
       - checkout
-      - run: echo "this is the test job"
+      - run: echo "Successful deployment to ECR"
 
 

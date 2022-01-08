@@ -38,7 +38,7 @@ jobs:
         environment: 
             MYSQL_HOST: MYSQL
             MYSQL_USER: MYSQL_USERNAME
-            MYSQL_PASSWORD: MYSQL_PASS
+            MYSQL_ALLOW_EMPTY_PASSWORD: 
         #   MYSQL_DATABASE: MYSQL
         #   MYSQL_HOST: MYSQL_URL 
         #   MYSQL_ROOT_HOST: MYSQL

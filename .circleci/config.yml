@@ -25,13 +25,6 @@ orbs:
  
 # Define the jobs we want to run for this project
 
-executor:
-  - snapshot:
-      db-instance-identifier: db.t2.micro
-      aws-access-key-id: AWS_ACCESS_KEY_ID 
-      aws-secret-access-key: AWS_SECRET_ACCESS_KEY 
-      aws-region: AWS_REGION 
-
 
 jobs:
   build:
@@ -40,17 +33,12 @@ jobs:
         auth:
           username: andrewdass
           password: $DOCKERTOKEN  # context / project UI env-var reference
-      - image: mysql:8.0.27
+      - image: postgres:9.6.5-alpine-ram
         auth:
           username: andrewdass
           password: $DOCKERTOKEN
         environment: 
-            MYSQL_ROOT_PASSWORD: DB_PASSWORD
-            MYSQL_HOST: DB_HOST
-        #   MYSQL_DATABASE: MYSQL
-        #   MYSQL_HOST: MYSQL_URL 
-        #   MYSQL_ROOT_HOST: MYSQL
-        #   MYSQL_USER: MYSQL_USERNAME
+            
 
 
     steps:

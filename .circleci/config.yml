@@ -31,7 +31,7 @@ jobs:
         auth:
           username: andrewdass
           password: $DOCKERTOKEN  # context / project UI env-var reference
-      - image: mysql:5:7.22
+      - image: circleci/mysql:5:7.22
 
 
         auth:

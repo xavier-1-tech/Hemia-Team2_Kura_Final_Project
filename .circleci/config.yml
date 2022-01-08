@@ -29,7 +29,9 @@ jobs:
         auth:
           username: andrewdass
           password: $DOCKERTOKEN  # context / project UI env-var reference
-      - image: circleci/mysql:8.0.4
+      - image: circleci/mariadb:10.5.12
+
+
 
         auth:
           username: andrewdass

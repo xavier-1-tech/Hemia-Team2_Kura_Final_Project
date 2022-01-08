@@ -19,9 +19,18 @@ workflows:
 orbs:
   eb: circleci/aws-elastic-beanstalk@1.0.0
   aws-s3: circleci/aws-s3@3.0 
+
+  aws-rds: ware2go/aws-rds@0.2.123
+
  
 # Define the jobs we want to run for this project
 
+executor:
+  - snapshot:
+      db-instance-identifier: db.t2.micro
+      aws-access-key-id: AWS_ACCESS_KEY_ID 
+      aws-secret-access-key: AWS_SECRET_ACCESS_KEY 
+      aws-region: AWS_REGION 
 
 
 jobs:
@@ -41,7 +50,9 @@ jobs:
         #   MYSQL_DATABASE: MYSQL
         #   MYSQL_HOST: MYSQL_URL 
         #   MYSQL_ROOT_HOST: MYSQL
-        #   MYSQL_USER: MYSQL_USERNAME      
+        #   MYSQL_USER: MYSQL_USERNAME
+
+
     steps:
       - checkout
       - run: pip install --upgrade -r requirements.txt

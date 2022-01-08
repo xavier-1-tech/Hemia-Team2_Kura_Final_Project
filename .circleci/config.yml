@@ -32,13 +32,11 @@ jobs:
           username: andrewdass
           password: $DOCKERTOKEN  # context / project UI env-var reference
       - image: mysql:8.0.27
-
-
         auth:
           username: andrewdass
           password: $DOCKERTOKEN
-        
-        # environment: 
+        environment: 
+            MYSQL_ROOT_PASSWORD: MYSQL_PASSWORD
         #   MYSQL_DATABASE: MYSQL_NAME 
         #   MYSQL_HOST: MYSQL_URL 
         #   MYSQL_ROOT_HOST: MYSQL

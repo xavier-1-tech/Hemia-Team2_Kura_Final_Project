@@ -36,9 +36,8 @@ jobs:
           username: andrewdass
           password: $DOCKERTOKEN
         environment: 
-            MYSQL_HOST: MYSQL
-            MYSQL_USER: MYSQL_USERNAME
-            MYSQL_ALLOW_EMPTY_PASSWORD: 
+            MYSQL_ROOT_PASSWORD: DB_PASSWORD
+            MYSQL_HOST: DB_HOST
         #   MYSQL_DATABASE: MYSQL
         #   MYSQL_HOST: MYSQL_URL 
         #   MYSQL_ROOT_HOST: MYSQL

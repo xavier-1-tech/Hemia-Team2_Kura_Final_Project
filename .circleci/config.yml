@@ -33,7 +33,7 @@ jobs:
         auth:
           username: andrewdass
           password: $DOCKERTOKEN  # context / project UI env-var reference
-      - image: postgres:9.6.5-alpine-ram
+      - image: postgres:13.3
         auth:
           username: andrewdass
           password: $DOCKERTOKEN

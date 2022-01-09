@@ -63,14 +63,15 @@ jobs:
       #     from: ./
       #     to: "s3://hemia"
       - run:
-          pip3 install --upgrade pipenv
-          mysql -u root -h HOST -ptest_pw
-          cd api && pipenv --three && pipenv install
-          cp config.template.yml test_config.yml
-          pipenv run pytest
-          cd frontend
-          yarn install
-          yarn build
+          command: |
+            pip3 install --upgrade pipenv
+            mysql -u root -h HOST -ptest_pw
+            cd api && pipenv --three && pipenv install
+            cp config.template.yml test_config.yml
+            pipenv run pytest
+            cd frontend
+            yarn install
+            yarn build
 
       
         

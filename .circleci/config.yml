@@ -44,6 +44,6 @@ jobs:
           name: Create non-admin user
           command: |
             sudo mysql -u root -e "CREATE user myuser IDENTIFIED BY 'password';"
-      - store_results:
-          path: /folder/test-results
+      
+      
       

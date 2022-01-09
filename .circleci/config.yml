@@ -21,11 +21,7 @@ jobs:
 
     steps:
       - checkout
-      - run:
-          name: Pip
-          command: |
-            sudo pip install pipenv
-            pipenv install
+      - run: python -m ensurepip --upgrade
       - run: pip install --upgrade -r requirements.txt
       - run: sudo apt-get update
       - run: pip3 install install awsebcli --upgrade

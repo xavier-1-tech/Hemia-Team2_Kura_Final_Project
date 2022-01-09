@@ -38,6 +38,7 @@ jobs:
       - checkout
       - run: sudo apt-get update
       - run: sudo apt-get upgrade
+      - run: python3 --version
       - run: sudo apt-get install python-pip
       - run: sudo apt-get install python3-pip
       # - run: sudo -H pip3 install --upgrade pip

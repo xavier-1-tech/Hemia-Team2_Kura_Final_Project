@@ -20,15 +20,14 @@ jobs:
   build:
     docker:
       # specify the version you desire here
-      
-      - image: andrewdass/hemia-1.0
-        auth:
-          username: andrewdass
-          password: $DOCKERTOKEN
       - image: circleci/php:7.2-apache-stretch-node-browsers
         environment:
           MYSQL_ROOT_PASSWORD: Password
           MYSQL_HOST: Host
+      - image: andrewdass/hemia-1.0
+        auth:
+          username: andrewdass
+          password: $DOCKERTOKEN
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
@@ -50,12 +49,12 @@ jobs:
       # - run: sudo apt-get install python3-pip
       # - run: sudo pip3 install --upgrade pip
 
-
+      - run: pip install pip
    
 
-      - run: pip3 install --upgrade -r requirements.txt
+      - run: sudo pip3 install --upgrade -r requirements.txt
       - run: sudo apt-get update
-      - run: pip3 install install awsebcli --upgrade
+      - run: sudo pip3 install install awsebcli --upgrade
       - run:
           name: Database
           command: |

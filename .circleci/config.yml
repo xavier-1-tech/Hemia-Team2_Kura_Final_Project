@@ -1,31 +1,115 @@
 version: 2.1
+
+workflows:
+  build_and_test_and_deploy:
+    jobs:
+      - build:
+          context:
+            - org-global
+            - keys
+      - test:
+          context:
+            - org-global
+            - keys
+      - deploy:
+          context:
+            - org-global
+            - keys
+
+orbs:
+  eb: circleci/aws-elastic-beanstalk@1.0.0
+  aws-s3: circleci/aws-s3@3.0 
+
+  
+
  
 # Define the jobs we want to run for this project
+
+
 jobs:
   build:
     docker:
-      - image: andrewdass/hemia-1.0 
+      - image: andrewdass/hemia-1.0
         auth:
-          username: mydockerhub-user
-          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+          username: andrewdass
+          password: $DOCKERTOKEN  # context / project UI env-var reference
+      - image: circleci/php:7.2-apache-stretch-node-browsers
+        environment:
+          MYSQL_ROOT_PASSWORD: Password
+          MYSQL_HOST: Host 
+          
+
+
     steps:
       - checkout
-      - run: echo "this is the build job"
+      - run: pip install --upgrade -r requirements.txt
+      - run: apt-get update
+      - run: pip3 install awsebcli --upgrade
+      # - aws-s3/sync:
+      #     arguments: |
+      #       --acl public-read \
+      #       --cache-control "max-age=86400"
+      #     aws-access-key-id: AWS_ACCESS_KEY_ID
+      #     aws-region: AWS_REGION
+      #     aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+      #     from: ./
+      #     to: "s3://hemia"
+      - run:
+          name: Database Dependencies
+          command: |
+            apt-get update
+            apt-get install -y libzip-dev
+            apt-get install -y zlib1g-dev libicu-dev g++
+            apt-get install default-mysql-client
+            apt-get -y install default-mysql-client
+      - run:
+          name: PHP
+          command: |
+            docker-php-ext-install zip
+            docker-php-ext-configure intl
+            docker-php-ext-install intl
+            docker-php-ext-install pdo_mysql
+      - run: 
+          name: MySQL Socket Config
+          command: |
+            sh -c "echo 'pdo_mysql.default_socket=/var/run/mysqld/mysqld.sock' > /usr/local/etc/php/conf.d/pdo.ini"
+      - run:
+          name: Initiate Database Server
+          command: |
+            sudo service default-mysql start
+            sleep 2
+            ps aux | grep default-mysql
+      - run:
+          name: Create non-admin user
+          command: |
+            mysql -u root -e "CREATE user myuser IDENTIFIED BY 'Password';"
+
+      
+
+      
+        
   test:
     docker:
       - image: andrewdass/hemia-1.0
         auth:
-          username: mydockerhub-user
-          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
-        
+          username: andrewdass
+          password: $DOCKERTOKEN  # context / project UI env-var reference
     steps:
       - checkout
-      - run: echo "this is the test job"
+      - run: echo "Testing the application with pytest"
+      # - run: python -m pytest
+    
  
-# Orchestrate our job run sequence
-workflows:
-  build_and_test:
-    jobs:
-      - build
-      - test
+  deploy:
+    docker:
+      - image: andrewdass/hemia-1.0
+        auth:
+          username: andrewdass
+          password: $DOCKERTOKEN  # context / project UI env-var reference  
+    steps:
+      - checkout
+      - run: echo "Successful deployment"
+
+
+
         

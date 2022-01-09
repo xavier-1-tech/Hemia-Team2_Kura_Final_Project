@@ -33,10 +33,7 @@ jobs:
         auth:
           username: andrewdass
           password: $DOCKERTOKEN  # context / project UI env-var reference
-      - image: php:latest
-        auth:
-          username: andrewdass
-          password: $DOCKERTOKEN
+      - image: circleci/php:7.2-apache-stretch-node-browsers
         environment:
           MYSQL_ROOT_PASSWORD: Password
           MYSQL_HOST: Host 
@@ -63,8 +60,8 @@ jobs:
             apt-get update
             apt-get install -y libzip-dev
             apt-get install -y zlib1g-dev libicu-dev g++
-            apt-get install default-mysql-client
-            apt-get -y install default-mysql-server
+            apt-get install mariadb-client
+            apt-get -y install mariadb-client
       - run:
           name: PHP
           command: |

@@ -39,7 +39,8 @@ jobs:
           password: $DOCKERTOKEN
         environment:
           MYSQL_ROOT_PASSWORD: DB_PASSWORD
-          MYSQL_HOST: DB_HOST 
+          DB_HOST: HOST  
+          DB_PORT: PORT 
 
           # MYSQL_ROOT_PASSWORD: rootpw
           # MYSQL_DATABASE: test_db

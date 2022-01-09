@@ -33,7 +33,7 @@ jobs:
         auth:
           username: andrewdass
           password: $DOCKERTOKEN  # context / project UI env-var reference
-      - image: circleci/php:7.2-apache-stretch-node-browsers
+      - image: php:latest
         auth:
           username: andrewdass
           password: $DOCKERTOKEN
@@ -63,8 +63,8 @@ jobs:
             apt-get update
             apt-get install -y libzip-dev
             apt-get install -y zlib1g-dev libicu-dev g++
-            apt-get install mysql-client
-            apt-get -y install mysql-server
+            apt-get install default-mysql-client
+            apt-get -y install default-mysql-server
       - run:
           name: PHP
           command: |

@@ -18,7 +18,7 @@ orbs:
 jobs:
   build:
     docker:
-      - image: mysql:latest
+      - image: circleci/mysql:latest
         auth:
           username: andrewdass
           password: DOCKERTOKEN # context / project UI env-var reference

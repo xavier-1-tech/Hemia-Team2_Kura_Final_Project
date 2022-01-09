@@ -5,8 +5,8 @@ jobs:
       # specify the version you desire here
       - image: circleci/php:7.2-apache-stretch-node-browsers
         environment:
-          MYSQL_ROOT_PASSWORD: password
-          MYSQL_HOST: 127.0.0.1
+          MYSQL_ROOT_PASSWORD: Password
+          MYSQL_HOST: Host
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
@@ -44,7 +44,4 @@ jobs:
           name: Create non-admin user
           command: |
             sudo mysql -u root -e "CREATE user myuser IDENTIFIED BY 'password';"
-      - run:
-          name: Run tests
-          command: |
-            php connect.php
+      

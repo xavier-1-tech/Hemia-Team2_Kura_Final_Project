@@ -38,7 +38,7 @@ jobs:
       - checkout
       - run: sudo apt-get update
       - run: sudo apt-get upgrade
-      
+      - run: sudo apt-get install python-pip
       - run: sudo apt-get install python3-pip
       # - run: sudo -H pip3 install --upgrade pip
 
@@ -50,7 +50,7 @@ jobs:
       # - run: sudo pip3 install --upgrade pip
    
 
-      - run: sudo pip3 install --upgrade -r requirements.txt
+      - run: sudo pip install --upgrade -r requirements.txt
       - run: sudo apt-get update
       - run: sudo pip3 install install awsebcli --upgrade
       - run:

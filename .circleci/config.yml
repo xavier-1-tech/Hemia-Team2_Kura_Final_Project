@@ -1,80 +1,41 @@
-version: 2.1
-
-workflows:
-  build_and_test_and_deploy:
-    jobs:
-      - build:
-          context:
-            - org-global
-            - keys
-      - test:
-          context:
-            - org-global
-            - keys
-      - deploy:
-          context:
-            - org-global
-            - keys
-
-orbs:
-  eb: circleci/aws-elastic-beanstalk@1.0.0
-  aws-s3: circleci/aws-s3@3.0 
-
-  
-
- 
-# Define the jobs we want to run for this project
-
-
+version: 2
 jobs:
   build:
     docker:
-      - image: andrewdass/hemia-1.0
-        auth:
-          username: andrewdass
-          password: $DOCKERTOKEN  # context / project UI env-var reference
+      # specify the version you desire here
       - image: circleci/php:7.2-apache-stretch-node-browsers
         environment:
           MYSQL_ROOT_PASSWORD: Password
-          MYSQL_HOST: Host 
-          
+          MYSQL_HOST: Host
 
+      # Specify service dependencies here if necessary
+      # CircleCI maintains a library of pre-built images
+      # documented at https://circleci.com/docs/2.0/circleci-images/
+      # - image: circleci/mysql:9.4
 
     steps:
       - checkout
-      - run: pip install --upgrade -r requirements.txt
-      - run: apt-get update
-      - run: pip3 install awsebcli --upgrade
-      # - aws-s3/sync:
-      #     arguments: |
-      #       --acl public-read \
-      #       --cache-control "max-age=86400"
-      #     aws-access-key-id: AWS_ACCESS_KEY_ID
-      #     aws-region: AWS_REGION
-      #     aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-      #     from: ./
-      #     to: "s3://hemia"
       - run:
-          name: Database Dependencies
+          name: Install things we need
           command: |
-            apt-get update
-            apt-get install -y libzip-dev
-            apt-get install -y zlib1g-dev libicu-dev g++
-            apt-get install mariadb-client
-            apt-get -y install mariadb-client
+            sudo apt-get update
+            sudo apt-get install -y libzip-dev
+            sudo apt-get install -y zlib1g-dev libicu-dev g++
+            sudo apt-get install mysql-client
+            sudo apt-get -y install mysql-server
       - run:
-          name: PHP
+          name: Install PHP exts
           command: |
-            docker-php-ext-install zip
-            docker-php-ext-configure intl
-            docker-php-ext-install intl
-            docker-php-ext-install pdo_mysql
-      - run: 
-          name: MySQL Socket Config
-          command: |
-            sh -c "echo 'pdo_mysql.default_socket=/var/run/mysqld/mysqld.sock' > /usr/local/etc/php/conf.d/pdo.ini"
+            sudo docker-php-ext-install zip
+            sudo docker-php-ext-configure intl
+            sudo docker-php-ext-install intl
+            sudo docker-php-ext-install pdo_mysql
       - run:
-          name: Initiate Database Server
+          name: Fix MySQL socket config
+          command: |
+            sudo sh -c "echo 'pdo_mysql.default_socket=/var/run/mysqld/mysqld.sock' > /usr/local/etc/php/conf.d/pdo.ini"
+      - run:
+          name: Start database server
           command: |
             sudo service mysql start
             sleep 2
@@ -82,32 +43,6 @@ jobs:
       - run:
           name: Create non-admin user
           command: |
-            mysql -u root -e "CREATE user myuser IDENTIFIED BY 'Password';"
-
-      
-
-      
-        
-  test:
-    docker:
-      - image: andrewdass/hemia-1.0
-        auth:
-          username: andrewdass
-          password: $DOCKERTOKEN  # context / project UI env-var reference
-    steps:
-      - checkout
-      - run: echo "Testing the application with pytest"
-      # - run: python -m pytest
-    
- 
-  deploy:
-    docker:
-      - image: andrewdass/hemia-1.0
-        auth:
-          username: andrewdass
-          password: $DOCKERTOKEN  # context / project UI env-var reference  
-    steps:
-      - checkout
-      - run: echo "Successful deployment"
+            sudo mysql -u root -e "CREATE user myuser IDENTIFIED BY 'password';"
 
 

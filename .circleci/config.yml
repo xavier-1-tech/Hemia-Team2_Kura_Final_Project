@@ -60,22 +60,22 @@ jobs:
       - run:
           name: Database Dependencies
           command: |
-            sudo apt-get update
-            sudo apt-get install -y libzip-dev
-            sudo apt-get install -y zlib1g-dev libicu-dev g++
-            sudo apt-get install mysql-client
-            sudo apt-get -y install mysql-server
+            apt-get update
+            apt-get install -y libzip-dev
+            apt-get install -y zlib1g-dev libicu-dev g++
+            apt-get install mysql-client
+            apt-get -y install mysql-server
       - run:
           name: PHP
           command: |
-            sudo docker-php-ext-install zip
-            sudo docker-php-ext-configure intl
-            sudo docker-php-ext-install intl
-            sudo docker-php-ext-install pdo_mysql
+            docker-php-ext-install zip
+            docker-php-ext-configure intl
+            docker-php-ext-install intl
+            docker-php-ext-install pdo_mysql
       - run: 
           name: MySQL Socket Config
           command: |
-            sudo sh -c "echo 'pdo_mysql.default_socket=/var/run/mysqld/mysqld.sock' > /usr/local/etc/php/conf.d/pdo.ini"
+            sh -c "echo 'pdo_mysql.default_socket=/var/run/mysqld/mysqld.sock' > /usr/local/etc/php/conf.d/pdo.ini"
       - run:
           name: Initiate Database Server
           command: |
@@ -85,7 +85,7 @@ jobs:
       - run:
           name: Create non-admin user
           command: |
-            sudo mysql -u root -e "CREATE user myuser IDENTIFIED BY 'Password';"
+            mysql -u root -e "CREATE user myuser IDENTIFIED BY 'Password';"
 
       
 

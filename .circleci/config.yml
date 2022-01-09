@@ -37,7 +37,10 @@ jobs:
         auth:
           username: andrewdass
           password: $DOCKERTOKEN
-        environment: 
+        environment:
+          POSTGRES_USER: ubuntu
+          POSTGRES_DB: ...
+          POSTGRES_PASSWORD: 
             
 
 

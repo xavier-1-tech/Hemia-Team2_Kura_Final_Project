@@ -20,14 +20,15 @@ jobs:
   build:
     docker:
       # specify the version you desire here
-      - image: circleci/php:7.2-apache-stretch-node-browsers
-        environment:
-          MYSQL_ROOT_PASSWORD: Password
-          MYSQL_HOST: Host
+      
       - image: andrewdass/hemia-1.0
         auth:
           username: andrewdass
           password: $DOCKERTOKEN
+      - image: circleci/php:7.2-apache-stretch-node-browsers
+        environment:
+          MYSQL_ROOT_PASSWORD: Password
+          MYSQL_HOST: Host
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
@@ -49,10 +50,7 @@ jobs:
       # - run: sudo apt-get install python3-pip
       # - run: sudo pip3 install --upgrade pip
 
-    
 
-      - run: wget https://bootstrap.pypa.io/get-pip.py
-      - run: sudo python3.8 get-pip.py
    
 
       - run: pip3 install --upgrade -r requirements.txt

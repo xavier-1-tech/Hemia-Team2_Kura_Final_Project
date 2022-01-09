@@ -1,5 +1,20 @@
 version: 2.1
 
+workflows:
+  build_and_test_and_deploy:
+    jobs:
+      - build:
+          context:
+            - org-global
+            - keys
+      - test:
+          context:
+            - org-global
+            - keys
+      - deploy:
+          context:
+            - org-global
+            - keys
 
 jobs:
   build:
@@ -66,4 +81,16 @@ jobs:
       - checkout
       - run: echo "Testing the application with pytest"
       # - run: python -m pytest
+  
+  
+  deploy:
+    docker:
+      - image: andrewdass/hemia-1.0
+        auth:
+          username: andrewdass
+          password: $DOCKERTOKEN  # context / project UI env-var reference  
+    steps:
+      - checkout
+      - run: echo "Successful deployment"
+
 

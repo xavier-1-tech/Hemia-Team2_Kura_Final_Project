@@ -37,9 +37,9 @@ jobs:
       - run:
           name: Start database server
           command: |
-            sudo service default-mysql start
+            sudo service mysql start
             sleep 2
-            ps aux | grep default-mysql
+            ps aux | grep mysql
       - run:
           name: Create non-admin user
           command: |

@@ -38,10 +38,10 @@ jobs:
           username: andrewdass
           password: $DOCKERTOKEN
         environment:
-          MYSQL_ROOT_PASSWORD: rootpw
-          MYSQL_DATABASE: test_db
-          MYSQL_USER: user
-          MYSQL_PASSWORD: passw0rd
+          MYSQL_ALLOW_EMPTY_PASSWORD:
+          # MYSQL_DATABASE: test_db
+          # MYSQL_USER: user
+          # MYSQL_PASSWORD: passw0rd
 
           # MYSQL_ROOT_PASSWORD: rootpw
           # MYSQL_DATABASE: test_db

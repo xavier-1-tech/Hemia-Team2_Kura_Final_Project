@@ -37,9 +37,9 @@ jobs:
       - run:
           name: Start database server
           command: |
-            sudo service mysql start
+            sudo service mariadb start
             sleep 2
-            ps aux | grep mysql
+            ps aux | grep mariadb
       - run:
           name: Create non-admin user
           command: |

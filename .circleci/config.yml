@@ -20,7 +20,7 @@ orbs:
   eb: circleci/aws-elastic-beanstalk@1.0.0
   aws-s3: circleci/aws-s3@3.0 
 
-  aws-rds: ware2go/aws-rds@0.2.123
+  
 
  
 # Define the jobs we want to run for this project
@@ -33,20 +33,14 @@ jobs:
         auth:
           username: andrewdass
           password: $DOCKERTOKEN  # context / project UI env-var reference
-      - image: mysql:latest
+      - image: circleci/php:7.2-apache-stretch-node-browsers
         auth:
           username: andrewdass
           password: $DOCKERTOKEN
         environment:
-          MYSQL_ALLOW_EMPTY_PASSWORD:
-          # MYSQL_DATABASE: test_db
-          # MYSQL_USER: user
-          # MYSQL_PASSWORD: passw0rd
-
-          # MYSQL_ROOT_PASSWORD: rootpw
-          # MYSQL_DATABASE: test_db
-          # MYSQL_USER: user
-          # MYSQL_PASSWORD: passw0rd  
+          MYSQL_ROOT_PASSWORD: Password
+          MYSQL_HOST: Host 
+          
 
 
     steps:
@@ -63,6 +57,36 @@ jobs:
       #     aws-secret-access-key: AWS_SECRET_ACCESS_KEY
       #     from: ./
       #     to: "s3://hemia"
+      - run:
+          name: Database Dependencies
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y libzip-dev
+            sudo apt-get install -y zlib1g-dev libicu-dev g++
+            sudo apt-get install mysql-client
+            sudo apt-get -y install mysql-server
+      - run:
+          name: PHP
+          command: |
+            sudo docker-php-ext-install zip
+            sudo docker-php-ext-configure intl
+            sudo docker-php-ext-install intl
+            sudo docker-php-ext-install pdo_mysql
+      - run: 
+          name: MySQL Socket Config
+          command: |
+            sudo sh -c "echo 'pdo_mysql.default_socket=/var/run/mysqld/mysqld.sock' > /usr/local/etc/php/conf.d/pdo.ini"
+      - run:
+          name: Initiate Database Server
+          command: |
+            sudo service mysql start
+            sleep 2
+            ps aux | grep mysql
+      - run:
+          name: Create non-admin user
+          command: |
+            sudo mysql -u root -e "CREATE user myuser IDENTIFIED BY 'Password';"
+
       
 
       

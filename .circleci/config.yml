@@ -39,7 +39,7 @@ jobs:
       - run: sudo apt-get update
       - run: sudo apt-get upgrade
       
-      # - run: sudo apt-get install python3-pip
+      - run: sudo apt-get install python3-pip
       # - run: sudo -H pip3 install --upgrade pip
 
       # - run: sudo apt install wget build-essential libreadline-gplv2-dev libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev libffi-dev zlib1g-dev

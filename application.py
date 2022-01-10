@@ -1,36 +1,27 @@
 from flask import Flask
-from flask import render_template, g, redirect, request
+from flask import render_template, redirect, request
 from flask.helpers import url_for
 
-# from flask_login import (
-#     LoginManager,
-#     current_user,
-#     login_required,
-#     login_user,
-#     logout_user,
-# )
+import pytest
 
-# from flask_oidc import OpenIDConnect
-# from okta.client import Client #as UsersClient
+import mariadb
 
-# from flask_login import LoginManager
-# from flask_login import login_user
+import info
 
-# import okta_jwt_verifier
-# #from okta import UserClient
+#Database
+conn = mariadb.connect(
+         host= db_host,
+         port= db_port,
+         user= db_user,
+         password= db_password,
+         database= db_database)
 
-# import json
+cur = conn.cursor()
 
-
-
+#Application
 application = app = Flask(__name__)
 
-# login_manager = LoginManager()
-# login_manager.init_app(app)
-# login_manager.login_view = 'login'
 
-
-#Flask Code
 @app.route('/')
 def quest():
     return render_template('index.html')
@@ -39,10 +30,8 @@ def quest():
 def quest10():
     return render_template("index.html")
 
-    
 
 @app.route('/doctor-list.html', methods=['GET', 'POST'])
-#@login_required
 def quest2():
     return render_template('doctor-list.html')
 
@@ -74,9 +63,6 @@ def quest8():
 @app.route('/sign-in-lab.html')
 def quest9():
     return render_template('sign-in-lab.html')
-
-
-
 
 
 if __name__ == "__main__":

@@ -1,4 +1,4 @@
-FROM python:3.10
+FROM python:latest
 COPY ./requirements.txt requirements.txt
 COPY templates/ /templates/
 RUN pip install -r requirements.txt

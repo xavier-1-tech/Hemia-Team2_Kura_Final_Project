@@ -11,5 +11,4 @@ build:
 artifacts:
   files:
     - '**/*'
-  base-directory: 'AndrewDass1/Hemia-Team2_Kura_Final_Project'
 

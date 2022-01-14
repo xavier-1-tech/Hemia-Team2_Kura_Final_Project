@@ -1,115 +1,82 @@
-version: 2.1
-
-workflows:
-  build_and_test_and_deploy:
-    jobs:
-      - build:
-          context:
-            - org-global
-            - keys
-      - test:
-          context:
-            - org-global
-            - keys
-      - deploy:
-          context:
-            - org-global
-            - keys
-
-orbs:
-  eb: circleci/aws-elastic-beanstalk@1.0.0
-  aws-s3: circleci/aws-s3@3.0
-  python: circleci/python@1.5.0
+version: 2
 
 jobs:
-  build:
+  plan-apply:
+    working_directory: /tmp/project
     docker:
-      # specify the version you desire here
-      - image: circleci/php:7.2-apache-stretch-node-browsers
-        environment:
-          MYSQL_ROOT_PASSWORD: Password
-          MYSQL_HOST: Host
-      - image: andrewdass/hemia-1.0
-        auth:
-          username: andrewdass
-          password: $DOCKERTOKEN
-
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/mysql:9.4
-
+      - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
     steps:
       - checkout
-      - run: sudo apt-get update
-      - run: sudo apt-get upgrade
-      
-      # - run: sudo apt-get install python-pip
-      # - run: sudo apt-get install python3-pip
-      # - run: sudo -H pip3 install --upgrade pip
+      - run:
+          name: terraform init & plan
+          command: |
+            terraform init -input=false
+            terraform plan -out tfapply -var-file variables.tfvars
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
 
-      # - run: sudo apt install wget build-essential libreadline-gplv2-dev libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev libffi-dev zlib1g-dev
-      # - run: wget https://www.python.org/ftp/python/3.10.0/Python-3.10.0.tgz 
-      # - run: tar xzf Python-3.10.0.tgz
-
-      # - run: sudo apt-get install python3-pip
-      # - run: sudo pip3 install --upgrade pip
-   
-
-      - run: sudo pip install --upgrade -r requirements.txt
-      - run: sudo apt-get update
-      - run: sudo pip3 install install awsebcli --upgrade
-      - run:
-          name: Database
-          command: |
-            sudo apt-get update
-            sudo apt-get install -y libzip-dev
-            sudo apt-get install -y zlib1g-dev libicu-dev g++
-            sudo apt-get install mysql-client
-            sudo apt-get -y install mysql-server
-      - run:
-          name: PHP
-          command: |
-            sudo docker-php-ext-install zip
-            sudo docker-php-ext-configure intl
-            sudo docker-php-ext-install intl
-            sudo docker-php-ext-install pdo_mysql
-      - run:
-          name: Fix MySQL socket config
-          command: |
-            sudo sh -c "echo 'pdo_mysql.default_socket=/var/run/mysqld/mysqld.sock' > /usr/local/etc/php/conf.d/pdo.ini"
-      - run:
-          name: Start database server
-          command: |
-            sudo service mysql start
-            sleep 2
-            ps aux | grep mysql
-      - run:
-          name: Create non-admin user
-          command: |
-            sudo mysql -u root -e "CREATE user myuser IDENTIFIED BY 'password';"
-  
-  
-  test:
+  apply:
     docker:
-      - image: andrewdass/hemia-1.0
-        auth:
-          username: andrewdass
-          password: $DOCKERTOKEN  # context / project UI env-var reference
+      - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
     steps:
-      - checkout
-      - run: echo "Testing the application with pytest"
-      # - run: python -m pytest
-  
-  
-  deploy:
+      - attach_workspace:
+          at: .
+      - run:
+          name: terraform
+          command: |
+            terraform apply -auto-approve tfapply
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+
+  plan-destroy:
     docker:
-      - image: andrewdass/hemia-1.0
-        auth:
-          username: andrewdass
-          password: $DOCKERTOKEN  # context / project UI env-var reference  
+      - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
     steps:
-      - checkout
-      - run: echo "Successful deployment"
+      - attach_workspace:
+          at: .
+      - run:
+          name: terraform create destroy plan
+          command: |
+            terraform plan -destroy -out tfdestroy -var-file variables.tfvars
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
 
+  destroy:
+    docker:
+      - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: terraform destroy
+          command: |
+            terraform apply -auto-approve tfdestroy
 
+workflows:
+  version: 2
+  plan_approve_apply:
+    jobs:
+      - plan-apply
+      - hold-apply:
+          type: approval
+          requires:
+            - plan-apply
+      - apply:
+          requires:
+            - hold-apply
+      - plan-destroy:
+          requires:
+            - apply
+      - hold-destroy:
+          type: approval
+          requires:
+            - plan-destroy
+      - destroy:
+          requires:
+            - hold-destroy

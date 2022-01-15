@@ -1,4 +1,4 @@
-FROM python:latest
+FROM php:latest
 COPY ./requirements.txt requirements.txt
 COPY templates/ /templates/
 RUN pip install -r requirements.txt
